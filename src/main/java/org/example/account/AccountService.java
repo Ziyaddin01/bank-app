@@ -1,8 +1,6 @@
 package org.example.account;
 
 import org.example.user.User;
-
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.*;
 
 public class AccountService {
