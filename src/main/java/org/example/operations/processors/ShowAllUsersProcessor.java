@@ -1,5 +1,6 @@
 package org.example.operations.processors;
 
+import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
 import org.example.user.User;
 import org.example.user.UserService;
@@ -19,5 +20,9 @@ public class ShowAllUsersProcessor implements OperationCommandProcessor {
 
     public ShowAllUsersProcessor(UserService userService) {
         this.userService = userService;
+    }
+    @Override
+    public ConsoleOperationType getOperationType() {
+        return ConsoleOperationType.SHOW_ALL_USERS;
     }
 }

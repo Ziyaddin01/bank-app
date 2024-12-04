@@ -1,12 +1,8 @@
 package org.example;
 
-import org.example.account.AccountService;
+
 import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
-import org.example.user.User;
-import org.example.user.UserService;
-
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -22,20 +18,26 @@ public class OperationConsoleListener {
 
             ) {
         this.scanner = scanner;
-
         this.processorMap = processorMap;
     }
 
     public void listenUpdates() {
-        System.out.println("Please type operations:\n");
         while (true) {
             var operationType = listenNextOperation();
             processNextOperation(operationType);
         }
     }
+    public void start() {
+        System.out.println("Console Listener started");
+    }
+    public void endListen() {
+        System.out.println("Console Listener ended");
+    }
+
 
     private ConsoleOperationType listenNextOperation() {
-        System.out.println("Please type next operation:");
+        System.out.println("\nPlease type next operation:");
+        printAllAvailableOperations();
         while (true) {
             var nextOperation = scanner.nextLine();
             try {
@@ -44,6 +46,11 @@ public class OperationConsoleListener {
                 System.out.println("No such command found");
             }
         }
+    }
+
+    private void printAllAvailableOperations() {
+        processorMap.keySet()
+                .forEach(System.out::println);
     }
 
     private void processNextOperation(ConsoleOperationType operation) {

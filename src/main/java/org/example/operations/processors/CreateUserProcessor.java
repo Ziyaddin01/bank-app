@@ -1,5 +1,6 @@
 package org.example.operations.processors;
 
+import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
 import org.example.user.User;
 import org.example.user.UserService;
@@ -22,5 +23,9 @@ public class CreateUserProcessor implements OperationCommandProcessor {
     public CreateUserProcessor(UserService userService, Scanner scanner) {
         this.userService = userService;
         this.scanner = scanner;
+    }
+    @Override
+    public ConsoleOperationType getOperationType() {
+        return ConsoleOperationType.USER_CREATE;
     }
 }

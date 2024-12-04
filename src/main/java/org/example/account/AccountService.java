@@ -41,4 +41,23 @@ public class AccountService {
 
         account.setMoneyAmount(account.getMoneyAmount() + moneyToDeposit);
     }
+
+    public void withdrawFromAccount(int accountId, int amountToWithdraw) {
+        var account = findAccountById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id=%s".formatted(accountId)));
+
+        if (amountToWithdraw <= 0) {
+            throw new IllegalArgumentException("Cannot withdraw not positive amount: amount=%d"
+                    .formatted(amountToWithdraw));
+        }
+
+        if (account.getMoneyAmount() < amountToWithdraw) {
+            throw new IllegalArgumentException(
+                    "Cannot withdraw from account: id=%s, moneyAmount=%s, attemptedWithDraw=%s"
+                    .formatted(accountId, account.getMoneyAmount(), amountToWithdraw)
+            );
+        }
+
+        account.setMoneyAmount(account.getMoneyAmount() - amountToWithdraw);
+    }
 }

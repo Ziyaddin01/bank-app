@@ -1,6 +1,7 @@
 package org.example.operations.processors;
 
 import org.example.account.AccountService;
+import org.example.operations.ConsoleOperationType;
 import org.example.operations.OperationCommandProcessor;
 import org.example.user.UserService;
 
@@ -24,6 +25,11 @@ public class CreateAccountProcessor implements OperationCommandProcessor {
 
         System.out.println("New account created with Id: %s for user: %s"
                 .formatted(account.getId(), user.getLogin()));
+    }
+
+    @Override
+    public ConsoleOperationType getOperationType() {
+        return ConsoleOperationType.ACCOUNT_CREATE;
     }
 
     public CreateAccountProcessor(UserService userService, AccountService accountService, Scanner scanner) {
