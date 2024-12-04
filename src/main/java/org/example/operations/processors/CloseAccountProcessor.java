@@ -7,7 +7,7 @@ import org.example.operations.OperationCommandProcessor;
 import org.example.user.User;
 import org.example.user.UserService;
 
-import javax.security.auth.login.AccountNotFoundException;
+
 import java.util.Scanner;
 
 public class CloseAccountProcessor implements OperationCommandProcessor {
@@ -31,6 +31,8 @@ public class CloseAccountProcessor implements OperationCommandProcessor {
                 .orElseThrow(() -> new IllegalArgumentException("No such user with id=%s"
                         .formatted(account.getUserId())));
         user.getAccountList().remove(account);
+
+        System.out.println("Account successfully closed.");
     }
 
     @Override

@@ -7,15 +7,19 @@ public class AccountService {
 
     private final Map<Integer, Account> accountMap;
     private int idCounter;
+    private final int defaultAccountAmount;
+    private final double transferCommission;
 
-    public AccountService() {
+    public AccountService(int defaultAccountAmount, double transferCommission) {
+        this.defaultAccountAmount = defaultAccountAmount;
+        this.transferCommission = transferCommission;
         this.accountMap = new HashMap<>();
         this.idCounter = 0;
     }
 
     public Account createAccount(User user) {
         idCounter++;
-        Account account = new Account(idCounter, user.getId(), 0); //todo default amount
+        Account account = new Account(idCounter, user.getId(), defaultAccountAmount);
         accountMap.put(account.getId(), account);
         return account;
     }
@@ -75,5 +79,32 @@ public class AccountService {
         accountToDeposit.setMoneyAmount(accountToDeposit.getMoneyAmount() + accountToDeposit.getMoneyAmount());
         accountMap.remove(accountId);
         return accountToRemove;
+    }
+
+    public void transfer(int fromAccountId, int toAccountId, int amountToTransfer) {
+        var accountFrom = findAccountById(fromAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id=%s"
+                        .formatted(fromAccountId)));
+        var accountTo = findAccountById(toAccountId)
+                .orElseThrow(() -> new IllegalArgumentException("No such account: id=%s"
+                        .formatted(toAccountId)));
+
+        if (amountToTransfer <= 0) {
+            throw new IllegalArgumentException("Cannot transfer not positive amount: amount=%d"
+                    .formatted(amountToTransfer));
+        }
+        if (accountFrom.getMoneyAmount() < amountToTransfer) {
+            throw new IllegalArgumentException(
+                    "Cannot transfer from account: id=%s, moneyAmount=%s, attemptedTransfer=%s"
+                            .formatted(accountFrom, accountFrom.getMoneyAmount(), amountToTransfer)
+            );
+        }
+
+        int totalAmountToDeposit = accountTo.getUserId() != accountFrom.getUserId()
+                ? (int) (amountToTransfer * (1 - transferCommission))
+                : amountToTransfer;
+
+        accountFrom.setMoneyAmount(accountFrom.getMoneyAmount() - amountToTransfer);
+        accountTo.setMoneyAmount(accountTo.getMoneyAmount() + totalAmountToDeposit);
     }
 }

@@ -50,12 +50,13 @@ public class OperationProcessorsConfiguration {
     ) {
         return new DepositAccountProcessor(scanner, accountService);
     }
-//    @Bean
-//    public AccountTransferProcessor transferAccountProcessors(
-//            UserService userService
-//    ) {
-//        return new AccountTransferProcessor(userService);
-//    }
+    @Bean
+    public AccountTransferProcessor transferAccountProcessors(
+            Scanner scanner,
+            AccountService accountService
+    ) {
+        return new AccountTransferProcessor(scanner, accountService);
+    }
     @Bean
     public AccountWithdrawProcessor withDrawAccountProcessors(
             AccountService accountService,
