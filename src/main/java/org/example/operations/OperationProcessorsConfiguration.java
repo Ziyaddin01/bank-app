@@ -36,9 +36,12 @@ public class OperationProcessorsConfiguration {
     }
     @Bean
     public CloseAccountProcessor closeAccountProcessor(
+            Scanner scanner,
+            AccountService accountService,
             UserService userService
+
     ) {
-        return new CloseAccountProcessor(userService);
+        return new CloseAccountProcessor(scanner, accountService, userService);
     }
     @Bean
     public DepositAccountProcessor depositAccountProcessor(
@@ -47,16 +50,17 @@ public class OperationProcessorsConfiguration {
     ) {
         return new DepositAccountProcessor(scanner, accountService);
     }
-    @Bean
-    public AccountTransferProcessor transferAccountProcessors(
-            UserService userService
-    ) {
-        return new AccountTransferProcessor(userService);
-    }
+//    @Bean
+//    public AccountTransferProcessor transferAccountProcessors(
+//            UserService userService
+//    ) {
+//        return new AccountTransferProcessor(userService);
+//    }
     @Bean
     public AccountWithdrawProcessor withDrawAccountProcessors(
-            UserService userService
+            AccountService accountService,
+            Scanner scanner
     ) {
-        return new AccountWithdrawProcessor(userService);
+        return new AccountWithdrawProcessor(scanner, accountService);
     }
 }
